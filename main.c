@@ -20,13 +20,13 @@ int main(int argc,char **argv)
 	(void) argv;
 	t_data	*data = NULL;
 
-	data = malloc(sizeof (t_data *));
+	data = malloc(sizeof (t_data));
 	if (data == NULL)
 	{
 		printf("Not enough memory\n");
 		return (-1);
 	}
-	data->img_buffer = malloc(sizeof (t_buffer *));
+	data->img_buffer = malloc(sizeof (t_buffer));
 	if (data->img_buffer == NULL)
 	{
 		free(data);

@@ -51,5 +51,46 @@ int main(int argc,char **argv)
 												  &data->img_buffer->bit_per_pixel,
 												  &data->img_buffer->line_length,
 												  &data->img_buffer->endian);
+	audio_init(data);
+	return (0);
+}
+
+int	audio_init(t_data *data)
+{
+	const PaDeviceInfo	*info;
+	const PaHostApiInfo	*host_api;
+	PaStreamParameters	out_param,in_param;
+	int					i,id;
+	Pa_Initialize();
+	for (i = 0;i < Pa_GetDeviceCount();i++)
+	{
+		info = Pa_GetDeviceInfo(i);
+		host_api = Pa_GetHostApiInfo(info->hostApi);
+		if (info->maxOutputChannels > 0)
+			printf("%d:\t[%s]\t%s (output)\n",i,host_api->name,info->name);
+	}
+	printf("\n------\nType AUDIO output device number:\n");
+	scanf("%d",&id);
+	info = Pa_GetDeviceInfo(id);
+	host_api = Pa_GetHostApiInfo(info->hostApi);
+	out_param.device = id;
+	out_param.channelCount = 2;
+	out_param.sampleFormat = paFloat32;
+	out_param.suggestedLatency = info->defaultLowOutputLatency;
+	out_param.hostApiSpecificStreamInfo = NULL;
+	in_param.device = id;
+	in_param.channelCount = 0;
+	in_param.sampleFormat = NULL;
+	in_param.suggestedLatency = info->defaultLowInputLatency;
+	in_param.hostApiSpecificStreamInfo = NULL;
+	Pa_OpenStream(data->audio_stream,
+				  &in_param,
+				  &out_param,
+				  SAMPLING_RATE,
+				  FRAME_BLOCK,
+				  paClipOff,
+				  audio_callback,
+				  data);
+	Pa_StartStream(data->audio_stream);
 	return (0);
 }

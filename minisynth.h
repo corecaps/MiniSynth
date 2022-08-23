@@ -31,5 +31,9 @@ typedef struct s_data
 	t_buffer	*img_buffer;
 	int 	size_x;
 	int		size_y;
+	PaStream *audio_stream;
 } t_data;
+int	audio_init(t_data *data);
+int audio_callback( const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer,const PaStreamCallbackTimeInfo* timeInfo,PaStreamCallbackFlags statusFlags,void *user_data );
+
 #endif //MINISYNTH_MINISYNTH_H

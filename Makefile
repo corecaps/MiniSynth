@@ -21,7 +21,7 @@ LD = -lrt -lm -lasound -ljack -pthread -Lminilibx-linux -lmlx -lXext -lXext -lX1
 INC = -Iinc/ -Iminilibx-linux/
 RM = rm -f
 
-SOURCE = main.c
+SOURCE = audio_render.c main.c
 OBJ = $(SOURCE:.c=.o)
 NAME = minisynth
 
@@ -38,4 +38,4 @@ clean :
 
 fclean: clean
 	$(RM) $(NAME)
-.PHONY: clean all
+.PHONY: fclean clean all

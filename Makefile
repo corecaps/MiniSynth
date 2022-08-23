@@ -17,13 +17,13 @@ CFLAGS = -Wall -Wextra -g -c
 
 PORTAUDIO = lib/libportaudio.a
 PORTSF = lib/libportsf.a
-LD = -lrt -lm -lasound -ljack -pthread -Lminilibx-linux -lXext -lXext -X11 -lz
+LD = -lrt -lm -lasound -ljack -pthread -Lminilibx-linux -lmlx -lXext -lXext -lX11 -lz
 INC = -Iinc/ -Iminilibx-linux/
 RM = rm -f
 
 SOURCE = main.c
-OBJ = $(SRC:.c=.o)
-NAME = minisymth
+OBJ = $(SOURCE:.c=.o)
+NAME = minisynth
 
 all: $(NAME)
 

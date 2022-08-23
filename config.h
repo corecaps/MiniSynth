@@ -12,5 +12,6 @@
 
 #ifndef MINISYNTH_CONFIG_H
 #define MINISYNTH_CONFIG_H
-
+#define SIZEX 900
+#define SIZEY 720
 #endif //MINISYNTH_CONFIG_H

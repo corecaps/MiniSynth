@@ -1,6 +1,14 @@
-//
-// Created by corecaps on 24/08/22.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   audio_render.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgarcia <jgarcia@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/24 01:23:40 by jgarcia           #+#    #+#             */
+/*   Updated: 2022/08/24 01:23:53 by jgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minisynth.h"
 
@@ -14,11 +22,13 @@ int audio_callback( const void *inputBuffer, void *outputBuffer,
 	float			*out = (float*)outputBuffer;
 	unsigned long	i;
 	(void) inputBuffer;
+	(void) timeInfo;
+	(void) statusFlags;
 
 	for( i=0; i < framesPerBuffer; i++ )
 	{
-		*out++ = 0.0;  /* left */
-		*out++ = 0.0;  /* right */
+		*out++ = (float)(data->main_phase.left * data->main_gain);  /* left */
+		*out++ = (float)(data->main_phase.right * data->main_gain);  /* right */
 	}
-	return 0;
+	return paContinue;
 }

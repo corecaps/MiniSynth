@@ -12,8 +12,9 @@
 
 #ifndef MINISYNTH_CONFIG_H
 #define MINISYNTH_CONFIG_H
-#define SIZEX 900
-#define SIZEY 720
+#define SIZEX 1024
+#define SIZEY 768
 #define SAMPLING_RATE 44100
 #define FRAME_BLOCK 256
+#define UI_BACKGROUND "./assets/ui_background.xpm"
 #endif //MINISYNTH_CONFIG_H

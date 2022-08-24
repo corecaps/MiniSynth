@@ -16,6 +16,11 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "config.h"
+typedef struct s_stereo_phase
+{
+	double	right;
+	double	left;
+} t_stereo_phase;
 typedef struct s_buffer
 {
 	void	*img;
@@ -26,14 +31,19 @@ typedef struct s_buffer
 }	t_buffer;
 typedef struct s_data
 {
-	void		*mlx;
-	void		*mlx_win;
-	t_buffer	*img_buffer;
-	int 	size_x;
-	int		size_y;
-	PaStream *audio_stream;
+	void			*mlx;
+	void			*mlx_win;
+	t_buffer		*img_buffer;
+	void			*ui_background;
+	int 			size_x;
+	int				size_y;
+	PaStream		*audio_stream;
+	t_stereo_phase	main_phase;
+	double			main_gain;
 } t_data;
-int	audio_init(t_data *data);
-int audio_callback( const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer,const PaStreamCallbackTimeInfo* timeInfo,PaStreamCallbackFlags statusFlags,void *user_data );
-
+int		audio_init(t_data *data);
+int		audio_callback( const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer,const PaStreamCallbackTimeInfo* timeInfo,PaStreamCallbackFlags statusFlags,void *user_data );
+void	graphic_init(t_data *data);
+void	print_device_list(const PaDeviceInfo *info, const PaHostApiInfo *host_api);
+int		render(t_data *data);
 #endif //MINISYNTH_MINISYNTH_H

@@ -14,7 +14,11 @@
 
 enum {ARG_NAME,ARG_NARGS};
 
-int main(int argc,char **argv)
+void set_audio_param(t_data *data, const PaDeviceInfo *info, int id,
+					 PaStreamParameters *out_param,
+					 PaStreamParameters *in_param);
+
+int main(int argc, char **argv)
 {
 	(void) argc;
 	(void) argv;
@@ -33,6 +37,19 @@ int main(int argc,char **argv)
 		printf("Not enough memory\n");
 		exit (-1);
 	}
+
+	audio_init(data);
+	graphic_init(data);
+	mlx_loop_hook(data->mlx, render, data);
+	mlx_loop(data->mlx);
+	return (0);
+}
+
+void graphic_init(t_data *data)
+{
+	int width;
+	int height;
+
 	data->size_x = SIZEX;
 	data->size_y = SIZEY;
 	data->mlx = mlx_init();
@@ -51,38 +68,22 @@ int main(int argc,char **argv)
 												  &data->img_buffer->bit_per_pixel,
 												  &data->img_buffer->line_length,
 												  &data->img_buffer->endian);
-	audio_init(data);
-	return (0);
+	data->ui_background = mlx_xpm_file_to_image(data->mlx,"./assets/ui_background.xpm",&width,&height);
 }
 
 int	audio_init(t_data *data)
 {
-	const PaDeviceInfo	*info;
-	const PaHostApiInfo	*host_api;
+	const PaDeviceInfo	*info = NULL;
+	const PaHostApiInfo	*host_api= NULL;
 	PaStreamParameters	out_param,in_param;
-	int					i,id;
+	int					id;
 	Pa_Initialize();
-	for (i = 0;i < Pa_GetDeviceCount();i++)
-	{
-		info = Pa_GetDeviceInfo(i);
-		host_api = Pa_GetHostApiInfo(info->hostApi);
-		if (info->maxOutputChannels > 0)
-			printf("%d:\t[%s]\t%s (output)\n",i,host_api->name,info->name);
-	}
+	print_device_list(info, host_api);
 	printf("\n------\nType AUDIO output device number:\n");
 	scanf("%d",&id);
 	info = Pa_GetDeviceInfo(id);
 	host_api = Pa_GetHostApiInfo(info->hostApi);
-	out_param.device = id;
-	out_param.channelCount = 2;
-	out_param.sampleFormat = paFloat32;
-	out_param.suggestedLatency = info->defaultLowOutputLatency;
-	out_param.hostApiSpecificStreamInfo = NULL;
-	in_param.device = id;
-	in_param.channelCount = 0;
-	in_param.sampleFormat = NULL;
-	in_param.suggestedLatency = info->defaultLowInputLatency;
-	in_param.hostApiSpecificStreamInfo = NULL;
+	set_audio_param(data, info, id, &out_param, &in_param);
 	Pa_OpenStream(data->audio_stream,
 				  &in_param,
 				  &out_param,
@@ -93,4 +94,35 @@ int	audio_init(t_data *data)
 				  data);
 	Pa_StartStream(data->audio_stream);
 	return (0);
+}
+
+void set_audio_param(t_data *data, const PaDeviceInfo *info, int id,
+					 PaStreamParameters *out_param,
+					 PaStreamParameters *in_param)
+{
+	(*out_param).device = id;
+	(*out_param).channelCount = 2;
+	(*out_param).sampleFormat = paFloat32;
+	(*out_param).suggestedLatency = info->defaultLowOutputLatency;
+	(*out_param).hostApiSpecificStreamInfo = NULL;
+	(*in_param).device = id;
+	(*in_param).channelCount = 0;
+	(*in_param).sampleFormat = paFloat32;
+	(*in_param).suggestedLatency = info->defaultLowInputLatency;
+	(*in_param).hostApiSpecificStreamInfo = NULL;
+	data->main_phase.left = 0.0;
+	data->main_phase.right = 0.0;
+	data->main_gain = 0.0;
+}
+
+void print_device_list(const PaDeviceInfo *info, const PaHostApiInfo *host_api)
+{
+	int i;
+	for (i = 0; i < Pa_GetDeviceCount(); i++)
+	{
+		info = Pa_GetDeviceInfo(i);
+		host_api = Pa_GetHostApiInfo(info->hostApi);
+		if (info->maxOutputChannels > 0)
+			printf("%d:\t[%s]\t%s (output)\n",i,host_api->name,info->name);
+	}
 }

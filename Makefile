@@ -13,7 +13,7 @@
 
 CURRENT_DIR = $(shell pwd)
 CC = gcc
-CFLAGS = -Wall -Wextra -g -c
+CFLAGS = -Wall -Wextra -g
 
 PORTAUDIO = lib/libportaudio.a
 PORTSF = lib/libportsf.a
@@ -21,7 +21,7 @@ LD = -lrt -lm -lasound -ljack -pthread -Lminilibx-linux -lmlx -lXext -lX11 -lz
 INC = -Iinc/ -Iminilibx-linux/
 RM = rm -f
 
-SOURCE = graphic_render.c audio_render.c controls.c quit.c main.c
+SOURCE = init.c graphic_render.c audio_render.c controls.c quit.c main.c
 OBJ = $(SOURCE:.c=.o)
 NAME = minisynth
 

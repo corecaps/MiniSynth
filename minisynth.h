@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "config.h"
+enum {ARG_NAME,ARG_NARGS};
 typedef struct s_stereo_phase
 {
 	double	right;
@@ -48,4 +49,8 @@ void	print_device_list(const PaDeviceInfo *info, const PaHostApiInfo *host_api);
 int		render(t_data *data);
 int		key_pressed(int keycode, t_data *data);
 int		win_close(t_data *data);
+void	set_audio_param(t_data *data, const PaDeviceInfo *info, int id, PaStreamParameters *out_param, PaStreamParameters *in_param);
+void	graphic_hooks(t_data *data);
+t_data	*alloc_mem();
+
 #endif //MINISYNTH_MINISYNTH_H

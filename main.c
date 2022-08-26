@@ -40,6 +40,8 @@ int main(int argc, char **argv)
 
 	audio_init(data);
 	graphic_init(data);
+	mlx_hook(data->mlx_win, 2, 1L << 0, key_pressed, data);
+	mlx_hook(data->mlx_win, 17, 0, win_close, data);
 	mlx_loop_hook(data->mlx, render, data);
 	mlx_loop(data->mlx);
 	return (0);
@@ -68,7 +70,7 @@ void graphic_init(t_data *data)
 												  &data->img_buffer->bit_per_pixel,
 												  &data->img_buffer->line_length,
 												  &data->img_buffer->endian);
-	data->ui_background = mlx_xpm_file_to_image(data->mlx,"./assets/ui_background.xpm",&width,&height);
+	data->ui_background = mlx_xpm_file_to_image(data->mlx,UI_BACKGROUND,&width,&height);
 }
 
 int	audio_init(t_data *data)

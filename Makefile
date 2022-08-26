@@ -21,7 +21,7 @@ LD = -lrt -lm -lasound -ljack -pthread -Lminilibx-linux -lmlx -lXext -lX11 -lz
 INC = -Iinc/ -Iminilibx-linux/
 RM = rm -f
 
-SOURCE = graphic_render.c audio_render.c main.c
+SOURCE = graphic_render.c audio_render.c controls.c quit.c main.c
 OBJ = $(SOURCE:.c=.o)
 NAME = minisynth
 

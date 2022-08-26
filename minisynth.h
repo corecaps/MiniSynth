@@ -46,4 +46,6 @@ int		audio_callback( const void *inputBuffer, void *outputBuffer, unsigned long 
 void	graphic_init(t_data *data);
 void	print_device_list(const PaDeviceInfo *info, const PaHostApiInfo *host_api);
 int		render(t_data *data);
+int		key_pressed(int keycode, t_data *data);
+int		win_close(t_data *data);
 #endif //MINISYNTH_MINISYNTH_H
